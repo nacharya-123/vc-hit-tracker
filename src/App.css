@@ -1,0 +1,375 @@
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+
+header h1 {
+  font-size: 28px;
+}
+
+.subtitle {
+  margin-top: 8px;
+  max-width: 640px;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.header-account {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.auth-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.auth-panel {
+  max-width: 380px;
+  width: 100%;
+}
+
+.auth-panel h1 {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.stats-bar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 24px 0;
+}
+
+.stat {
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 16px;
+  min-width: 100px;
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text);
+  opacity: 0.8;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+
+.panel h2 {
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.fund-profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.fund-profile-header h2 {
+  margin-bottom: 0;
+}
+
+.fund-profile-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.fund-profile-grid .muted {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  opacity: 0.7;
+}
+
+.investment-lens {
+  font-style: italic;
+  opacity: 0.9;
+  line-height: 1.4;
+}
+
+.check-size-row {
+  display: flex;
+  gap: 8px;
+}
+
+.check-size-row input {
+  width: 0;
+  flex: 1;
+}
+
+.button-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.theme-form,
+.hit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field-label {
+  font-size: 12px;
+  opacity: 0.75;
+  margin-top: 4px;
+}
+
+.quick-capture {
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed var(--border);
+}
+
+.quick-capture .field-label {
+  margin-top: 0;
+  margin-bottom: 6px;
+}
+
+.quick-capture textarea {
+  width: 100%;
+}
+
+input,
+select,
+textarea,
+button {
+  font: inherit;
+}
+
+input,
+select,
+textarea {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: var(--bg);
+  color: var(--text-h);
+}
+
+textarea {
+  resize: vertical;
+}
+
+button[type="submit"] {
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: white;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button[type="submit"]:hover {
+  opacity: 0.9;
+}
+
+.link-btn {
+  border: none;
+  background: none;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 13px;
+  padding: 0;
+}
+
+.empty {
+  opacity: 0.7;
+  font-size: 14px;
+}
+
+.warning {
+  background: rgba(220, 100, 40, 0.12);
+  color: #b25120;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
+  margin: 0;
+}
+
+.muted {
+  opacity: 0.7;
+}
+
+.theme-list {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.theme-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+th {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  opacity: 0.7;
+}
+
+.notes-cell {
+  max-width: 220px;
+  white-space: pre-wrap;
+}
+
+a {
+  color: var(--accent);
+}
+
+.status {
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.status-new {
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+.status-reviewing {
+  background: rgba(230, 160, 20, 0.15);
+  color: #a66a00;
+}
+
+.status-approved {
+  background: rgba(34, 160, 90, 0.15);
+  color: #1a8a52;
+}
+
+.status-passed {
+  background: rgba(150, 150, 160, 0.15);
+  color: #6b6b76;
+}
+
+.status-pushed-to-affinity {
+  background: rgba(60, 120, 240, 0.15);
+  color: #2a5fd0;
+}
+
+.fit {
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-weight: 600;
+  font-size: 12px;
+  max-width: 180px;
+}
+
+.fit-direct-cancer-care-delivery {
+  background: rgba(34, 160, 90, 0.15);
+  color: #1a8a52;
+}
+
+.fit-drug-therapy-acceleration {
+  background: rgba(34, 160, 90, 0.15);
+  color: #1a8a52;
+}
+
+.fit-both {
+  background: rgba(20, 150, 130, 0.18);
+  color: #0e7d6a;
+}
+
+.fit-indirect-general-healthtech {
+  background: rgba(220, 100, 40, 0.15);
+  color: #b25120;
+}
+
+.fit-needs-assessment {
+  background: rgba(150, 150, 160, 0.15);
+  color: #6b6b76;
+}
