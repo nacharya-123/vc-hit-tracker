@@ -41,6 +41,35 @@ Share the deployed URL. Anyone on the team enters their email, gets a
 magic link, clicks it, and is in — no separate account creation. Everyone
 sees and edits the same shared data in real time.
 
+### 4. (Optional) Turn on nightly automated sourcing
+
+A scheduled job (`api/source-hits.ts`, wired up in `vercel.json` as a Vercel
+Cron) can research new candidate companies against your themes every night
+and drop them into the tracker as "New" hits for review — the automation
+piece from the original ask. It's off by default until you add these three
+environment variables in Vercel (**Settings → Environment Variables**):
+
+- `ANTHROPIC_API_KEY` — from [console.anthropic.com](https://console.anthropic.com);
+  this is real, usage-based billing (a few cents to a few dollars per run
+  depending on how many themes it researches)
+- `SUPABASE_SERVICE_ROLE_KEY` — from Supabase **Settings → API Keys** (the
+  `service_role` key, *not* the anon/publishable one — it bypasses row-level
+  security so the nightly job can write without a logged-in user; treat it
+  as a secret, never put it in `VITE_`-prefixed vars or client code)
+- `SUPABASE_URL` — same Project URL as `VITE_SUPABASE_URL`, just under a
+  non-public name since this one's read server-side
+- `CRON_SECRET` — any random string you make up (e.g. `openssl rand -hex 32`);
+  Vercel automatically sends it as a bearer token on Cron-triggered
+  requests, and the function checks it so nobody else can trigger paid API
+  calls by hitting the URL directly
+
+Once those are set, redeploy and it starts running on the schedule in
+`vercel.json` (default: 9am UTC daily — edit the cron expression there to
+change it). You can also trigger a run manually anytime by opening
+`https://your-app.vercel.app/api/source-hits` with the right
+`Authorization: Bearer <CRON_SECRET>` header (e.g. via `curl`), which is
+useful for testing before waiting for the schedule.
+
 ## Local development
 
 ```sh

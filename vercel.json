@@ -1,0 +1,8 @@
+{
+  "crons": [
+    { "path": "/api/source-hits", "schedule": "0 9 * * *" }
+  ],
+  "functions": {
+    "api/source-hits.ts": { "maxDuration": 300 }
+  }
+}
