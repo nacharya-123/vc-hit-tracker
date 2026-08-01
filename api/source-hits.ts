@@ -13,7 +13,7 @@ import Anthropic from "@anthropic-ai/sdk";
 // CRON_SECRET (Vercel sets this automatically for Cron-triggered requests;
 // this handler checks it so the endpoint can't be triggered by anyone else).
 
-const THEMES_PER_RUN = 3;
+const THEMES_PER_RUN = 1;
 const MAX_CANDIDATES_PER_THEME = 2;
 
 interface Candidate {
@@ -101,8 +101,8 @@ If you find no credible real candidates for this theme, respond with an empty ar
     const response = await anthropic.messages.create({
       model: "claude-opus-5",
       max_tokens: 4096,
-      output_config: { effort: "high" },
-      tools: [{ type: "web_search_20260209", name: "web_search", max_uses: 6 }],
+      output_config: { effort: "medium" },
+      tools: [{ type: "web_search_20260209", name: "web_search", max_uses: 4 }],
       messages: [{ role: "user", content: prompt }],
     });
 
