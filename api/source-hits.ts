@@ -13,7 +13,7 @@ import Anthropic from "@anthropic-ai/sdk";
 // CRON_SECRET (Vercel sets this automatically for Cron-triggered requests;
 // this handler checks it so the endpoint can't be triggered by anyone else).
 
-const THEMES_PER_RUN = 1;
+const THEMES_PER_RUN = 2;
 const MAX_CANDIDATES_PER_THEME = 2;
 
 interface Candidate {
@@ -42,7 +42,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const [fundProfileRes, themesRes, portfolioRes, existingHitsRes] = await Promise.all([
     supabase.from("fund_profile").select("*").eq("id", 1).maybeSingle(),
-    supabase.from("themes").select("*"),
+    supabase.from("themes").select("*").order("id"),
     supabase.from("portfolio_companies").select("name"),
     supabase.from("hits").select("company"),
   ]);
@@ -65,10 +65,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     ...(existingHits ?? []).map((h) => h.company.toLowerCase()),
   ]);
 
-  // Rotate which themes get researched by picking a random subset each run,
-  // so repeated nightly runs eventually cover all of them.
-  const shuffled = [...themes].sort(() => Math.random() - 0.5);
-  const targetThemes = shuffled.slice(0, THEMES_PER_RUN);
+  // Deterministic day-based rotation (not random) so every theme actually
+  // gets covered on a predictable cadence instead of leaving coverage to
+  // chance across nightly runs.
+  const daysSinceEpoch = Math.floor(Date.now() / 86_400_000);
+  const startIndex = daysSinceEpoch % themes.length;
+  const targetThemes = Array.from(
+    { length: Math.min(THEMES_PER_RUN, themes.length) },
+    (_, i) => themes[(startIndex + i) % themes.length]
+  );
 
   const results: { theme: string; added: string[]; skipped: string[] } [] = [];
 
