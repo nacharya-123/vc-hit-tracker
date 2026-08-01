@@ -40,16 +40,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   );
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
 
-  const [{ data: fundProfile }, { data: themes }, { data: portfolio }, { data: existingHits }] =
-    await Promise.all([
-      supabase.from("fund_profile").select("*").eq("id", 1).maybeSingle(),
-      supabase.from("themes").select("*"),
-      supabase.from("portfolio_companies").select("name"),
-      supabase.from("hits").select("company"),
-    ]);
+  const [fundProfileRes, themesRes, portfolioRes, existingHitsRes] = await Promise.all([
+    supabase.from("fund_profile").select("*").eq("id", 1).maybeSingle(),
+    supabase.from("themes").select("*"),
+    supabase.from("portfolio_companies").select("name"),
+    supabase.from("hits").select("company"),
+  ]);
+  const { data: fundProfile } = fundProfileRes;
+  const { data: themes } = themesRes;
+  const { data: portfolio } = portfolioRes;
+  const { data: existingHits } = existingHitsRes;
 
   if (!fundProfile || !themes || themes.length === 0) {
-    return res.status(500).json({ error: "No fund profile or themes found" });
+    return res.status(500).json({
+      error: "No fund profile or themes found",
+      fundProfileError: fundProfileRes.error?.message ?? null,
+      themesError: themesRes.error?.message ?? null,
+      supabaseUrlUsed: process.env.SUPABASE_URL ?? null,
+    });
   }
 
   const knownNames = new Set([
