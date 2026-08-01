@@ -13,8 +13,9 @@ import Anthropic from "@anthropic-ai/sdk";
 // CRON_SECRET (Vercel sets this automatically for Cron-triggered requests;
 // this handler checks it so the endpoint can't be triggered by anyone else).
 
-const THEMES_PER_RUN = 2;
+const THEMES_PER_RUN = 20;
 const MAX_CANDIDATES_PER_THEME = 2;
+const BATCH_SIZE = 5;
 
 interface Candidate {
   company: string;
@@ -75,9 +76,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     (_, i) => themes[(startIndex + i) % themes.length]
   );
 
-  const results: { theme: string; added: string[]; skipped: string[] } [] = [];
-
-  for (const theme of targetThemes) {
+  async function researchTheme(theme: { id: number; name: string; description: string | null }) {
     const prompt = `You are sourcing seed/Series A investment candidates for a venture fund.
 
 Fund investment lens: ${fundProfile.investment_lens}
@@ -147,7 +146,18 @@ If you find no credible real candidates for this theme, respond with an empty ar
         added.push(c.company);
       }
     }
-    results.push({ theme: theme.name, added, skipped });
+    return { theme: theme.name, added, skipped };
+  }
+
+  // Research themes in small concurrent batches rather than one at a time —
+  // 20 sequential Claude calls (each doing its own web searches) would run
+  // well past Vercel's function timeout. Batching keeps wall-clock time down
+  // while staying under a personal API account's concurrency limits.
+  const results: { theme: string; added: string[]; skipped: string[] }[] = [];
+  for (let i = 0; i < targetThemes.length; i += BATCH_SIZE) {
+    const batch = targetThemes.slice(i, i + BATCH_SIZE);
+    const batchResults = await Promise.all(batch.map((theme) => researchTheme(theme)));
+    results.push(...batchResults);
   }
 
   return res.status(200).json({ ranAt: new Date().toISOString(), results });

@@ -50,8 +50,10 @@ piece from the original ask. It's off by default until you add these three
 environment variables in Vercel (**Settings → Environment Variables**):
 
 - `ANTHROPIC_API_KEY` — from [console.anthropic.com](https://console.anthropic.com);
-  this is real, usage-based billing (a few cents to a few dollars per run
-  depending on how many themes it researches)
+  this is real, usage-based billing — roughly $0.05-$0.15 per theme researched
+  (Claude tokens + web search), so around $1-$3 per nightly run at the default
+  20 themes/run, researched in concurrent batches of 5 to stay under Vercel's
+  function timeout
 - `SUPABASE_SERVICE_ROLE_KEY` — from Supabase **Settings → API Keys** (the
   `service_role` key, *not* the anon/publishable one — it bypasses row-level
   security so the nightly job can write without a logged-in user; treat it
