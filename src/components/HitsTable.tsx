@@ -12,6 +12,35 @@ function fitClass(relevance: OncologyRelevance) {
   return `fit fit-${relevance.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}`;
 }
 
+const NOTES_PREVIEW_LENGTH = 90;
+
+function NotesCell({ notes }: { notes: string }) {
+  const [expanded, setExpanded] = useState(false);
+
+  if (!notes) return <>—</>;
+  if (notes.length <= NOTES_PREVIEW_LENGTH) return <>{notes}</>;
+
+  if (expanded) {
+    return (
+      <>
+        {notes}{" "}
+        <button className="link-btn notes-toggle" onClick={() => setExpanded(false)}>
+          Show less
+        </button>
+      </>
+    );
+  }
+
+  return (
+    <>
+      {notes.slice(0, NOTES_PREVIEW_LENGTH).trimEnd()}…{" "}
+      <button className="link-btn notes-toggle" onClick={() => setExpanded(true)}>
+        Show more
+      </button>
+    </>
+  );
+}
+
 export function HitsTable({ hits, themes, onChange }: Props) {
   const [themeFilter, setThemeFilter] = useState<string>("all");
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -136,7 +165,9 @@ export function HitsTable({ hits, themes, onChange }: Props) {
                       h.source || "—"
                     )}
                   </td>
-                  <td className="notes-cell">{h.notes || "—"}</td>
+                  <td className="notes-cell">
+                    <NotesCell notes={h.notes} />
+                  </td>
                   <td>{new Date(h.addedDate).toLocaleDateString()}</td>
                   <td>
                     <select
