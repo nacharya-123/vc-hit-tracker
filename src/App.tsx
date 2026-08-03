@@ -23,9 +23,13 @@ import { StatsBar } from "./components/StatsBar";
 import { FundProfilePanel } from "./components/FundProfilePanel";
 import { PortfolioPanel } from "./components/PortfolioPanel";
 import { SourcesPanel } from "./components/SourcesPanel";
+import { DigestPanel } from "./components/DigestPanel";
 import "./App.css";
 
+type Tab = "sourcing" | "digest";
+
 function Tracker({ userEmail }: { userEmail: string | undefined }) {
+  const [tab, setTab] = useState<Tab>("sourcing");
   const [loading, setLoading] = useState(true);
   const [themes, setThemes] = useState<Theme[]>([]);
   const [hits, setHits] = useState<Hit[]>([]);
@@ -137,22 +141,37 @@ function Tracker({ userEmail }: { userEmail: string | undefined }) {
           </div>
         </div>
         {syncError && <p className="warning">Sync error: {syncError}</p>}
+
+        <nav className="tabs">
+          <button className={tab === "sourcing" ? "tab tab-active" : "tab"} onClick={() => setTab("sourcing")}>
+            Sourcing
+          </button>
+          <button className={tab === "digest" ? "tab tab-active" : "tab"} onClick={() => setTab("digest")}>
+            Yosemite Digest
+          </button>
+        </nav>
       </header>
 
-      <StatsBar hits={hits} />
+      {tab === "sourcing" ? (
+        <>
+          <StatsBar hits={hits} />
 
-      <div className="layout">
-        <div className="column">
-          <FundProfilePanel profile={fundProfile} onChange={handleFundProfileChange} />
-          <SourcesPanel sources={sources} onChange={handleSourcesChange} />
-          <PortfolioPanel portfolio={portfolio} onChange={handlePortfolioChange} />
-          <ThemesPanel themes={themes} onChange={handleThemesChange} />
-          <HitForm themes={themes} portfolio={portfolio} onAdd={(h) => handleHitsChange([...hits, h])} />
-        </div>
-        <div className="column column-wide">
-          <HitsTable hits={hits} themes={themes} onChange={handleHitsChange} />
-        </div>
-      </div>
+          <div className="layout">
+            <div className="column">
+              <FundProfilePanel profile={fundProfile} onChange={handleFundProfileChange} />
+              <SourcesPanel sources={sources} onChange={handleSourcesChange} />
+              <PortfolioPanel portfolio={portfolio} onChange={handlePortfolioChange} />
+              <ThemesPanel themes={themes} onChange={handleThemesChange} />
+              <HitForm themes={themes} portfolio={portfolio} onAdd={(h) => handleHitsChange([...hits, h])} />
+            </div>
+            <div className="column column-wide">
+              <HitsTable hits={hits} themes={themes} onChange={handleHitsChange} />
+            </div>
+          </div>
+        </>
+      ) : (
+        <DigestPanel />
+      )}
     </div>
   );
 }

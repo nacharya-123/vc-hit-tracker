@@ -381,3 +381,146 @@ a {
   background: rgba(150, 150, 160, 0.15);
   color: #6b6b76;
 }
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-top: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tab {
+  background: none;
+  border: none;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  opacity: 0.7;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.tab:hover {
+  opacity: 1;
+}
+
+.tab-active {
+  opacity: 1;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+}
+
+.digest {
+  margin-top: 24px;
+}
+
+.digest-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.digest-sources {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+
+.source-chip {
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+}
+
+.source-chip-live {
+  background: rgba(34, 160, 90, 0.12);
+  color: #1a8a52;
+  border-color: transparent;
+}
+
+.source-chip-unavailable {
+  background: rgba(220, 60, 60, 0.1);
+  color: #b23a3a;
+  border-color: transparent;
+}
+
+.source-chip-needs-connector {
+  background: var(--panel-bg);
+  color: var(--text);
+  opacity: 0.6;
+}
+
+.digest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.digest-item h3 {
+  margin: 8px 0 6px;
+  font-size: 16px;
+}
+
+.digest-item-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.digest-why {
+  font-size: 13px;
+  margin: 6px 0;
+}
+
+.digest-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.tag-pill {
+  background: var(--accent-bg);
+  color: var(--accent);
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.signal {
+  border-radius: 6px;
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.signal-company-lead {
+  background: rgba(91, 61, 246, 0.15);
+  color: var(--accent);
+}
+
+.signal-market-signal {
+  background: rgba(34, 160, 90, 0.15);
+  color: #1a8a52;
+}
+
+.signal-policy-signal {
+  background: rgba(220, 100, 40, 0.15);
+  color: #b25120;
+}
+
+.signal-podcast-note {
+  background: rgba(150, 150, 160, 0.15);
+  color: #6b6b76;
+}
