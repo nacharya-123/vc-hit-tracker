@@ -1,9 +1,11 @@
 {
   "crons": [
-    { "path": "/api/source-hits", "schedule": "0 9 * * *" }
+    { "path": "/api/source-hits", "schedule": "0 9 * * *" },
+    { "path": "/api/form-d-scan", "schedule": "0 11 * * *" }
   ],
   "functions": {
     "api/source-hits.ts": { "maxDuration": 300 },
-    "api/digest.ts": { "maxDuration": 30 }
+    "api/digest.ts": { "maxDuration": 30 },
+    "api/form-d-scan.ts": { "maxDuration": 300 }
   }
 }
