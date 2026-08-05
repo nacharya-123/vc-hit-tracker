@@ -152,6 +152,14 @@ function parseFeed(xml: string): FeedItem[] {
   }));
 }
 
+const DIGEST_CUTOFF = new Date("2026-01-01T00:00:00Z");
+
+function isRecentEnough(published: string) {
+  if (!published) return false;
+  const parsed = new Date(published);
+  return !Number.isNaN(parsed.getTime()) && parsed >= DIGEST_CUTOFF;
+}
+
 function summarize(description: string, title: string) {
   const clean = stripHtml(description || title);
   if (clean.length <= 340) return clean;
@@ -234,6 +242,7 @@ async function fetchFeed(source: FeedConfig, portfolioNames: string[]): Promise<
   const xml = await response.text();
   return parseFeed(xml)
     .filter((item) => item.title && item.itemUrl)
+    .filter((item) => isRecentEnough(item.published))
     .slice(0, 3)
     .map((item) => {
       const combinedText = `${item.title}. ${item.description}`;
@@ -297,7 +306,7 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
             ? result.reason instanceof Error
               ? result.reason.message
               : "Feed unavailable"
-            : "No feed items returned",
+            : "No items from 2026 onward right now",
       });
     }
   });
